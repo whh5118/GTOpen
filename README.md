@@ -11,7 +11,11 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [关键函数定义（16.3）（已翻译）](https://github.com/whh5118/GTOpen/blob/master/Doc/skill%E8%AF%AD%E8%A8%80API_%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89_16.3.pdf)
 * [axl函数定义（16.3）（已翻译）](https://github.com/whh5118/GTOpen/blob/master/Doc/skill%E8%AF%AD%E8%A8%80API_axl%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89_16.3.pdf)
 * [ipc函数定义（16.3）（已翻译）](https://github.com/whh5118/GTOpen/blob/master/Doc/skill%E8%AF%AD%E8%A8%80API_ipc%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89_16.3.pdf)
-### 3、实用工具开发
+### 4、开发环境搭建
+#### 1、覆盖allegro.ilinit文件
+#### 2、ctrl+Q编译函数，ctrl+W执行函数
+#### 3、根据CIW窗口提示修改代码
+### 5、实用工具开发
 * [计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gt_calculator.il)
 * [测量工具]()
 * [菜单函数]()
