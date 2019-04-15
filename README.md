@@ -20,4 +20,5 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [测量工具]()
 * [菜单函数]()
 ### 6、联系方式
-QQ：  [573039197](https://github.com/whh5118/GTOpen/blob/master/QQ%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
+QQ群：[573039197](https://github.com/whh5118/GTOpen/blob/master/QQ%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
+公众号：[几楼科技](https://github.com/whh5118/GTOpen/blob/master/%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
