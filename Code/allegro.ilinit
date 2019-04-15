@@ -1,0 +1,9 @@
+axlSetAlias( "~Q" "skill Test_funload") 
+axlSetAlias( "~W" "skill Test_fun") 
+axlSetAlias( "~A" "skill Test_ChangeEn2CH") 
+
+defun( Test_funload ()
+	loadi("G:/360MoveData/Users/Administrator/Documents/GitHub/GTOpen/Codegtopen_main.il")
+)
+
+Test_funload()
