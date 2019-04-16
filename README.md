@@ -12,9 +12,9 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [axl函数定义（16.3）（已翻译）](https://github.com/whh5118/GTOpen/blob/master/Doc/skill%E8%AF%AD%E8%A8%80API_axl%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89_16.3.pdf)
 * [ipc函数定义（16.3）（已翻译）](https://github.com/whh5118/GTOpen/blob/master/Doc/skill%E8%AF%AD%E8%A8%80API_ipc%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89_16.3.pdf)
 ### 4、开发环境搭建
-#### * [安装调试环境](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85.bmp)
-#### * [调试快捷键(ctrl+1,ctrl+2)](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE.bmp)
-#### * [CIW查看调试结果](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%8F%8D%E9%A6%88.bmp)
+* [安装调试环境](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85.bmp)
+* [调试快捷键(ctrl+1,ctrl+2)](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE.bmp)
+* [CIW查看调试结果](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%8F%8D%E9%A6%88.bmp)
 ### 5、实用工具开发
 * [计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gt_calculator.il)
 * [测量工具]()
