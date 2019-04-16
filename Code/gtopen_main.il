@@ -1,7 +1,7 @@
 
 
 procedure( gtopen_menu_load(@optional t_menufile)
-let((port menuList)
+let((port menuList tt menuListch)
 	axlTriggerClear('menu 'gtopen_menu_load)
 	unless(t_menufile
 		foreach(n0 parseString(axlGetVariable("menupath")	" ")
@@ -17,11 +17,36 @@ let((port menuList)
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
 			(popup "Utility Tools")
-			   ("mils<->mm" "skill gt_calculator_main")
+			   ("Calculator" "skill gt_calculator_main")
 			(end)
 			(separator)
 			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
 		(end)
+	)
+	chlist = '(
+		"&GTopen" "\274\270\302\245\271\244\276\337"
+		"[Working Directory]" "\344\257\300\300\304\277\302\274"
+		"[Clean Directory]" "\307\345\300\355\304\277\302\274"
+		"Utility Tools" "\312\265\323\303\271\244\276\337"
+		"Calculator" "\274\306\313\343\306\367"
+		"[Tool About]" "\271\330\323\332"
+	)
+	when(axlVersion('version) < 17
+		menuListch = nil
+		foreach(n0 menuList
+			tt = member(car(n0) chlist)
+			tt0 = member(cadr(n0) chlist)
+			if(tt then
+				menuListch = cons(list(cadr(tt) cadr(n0)) menuListch)
+			else
+				if(tt0 then
+					menuListch = cons(list(car(n0) cadr(tt0)) menuListch)
+				else
+					menuListch = cons(n0 menuListch)
+				)
+			)
+		)
+		menuList = reverse(menuListch)
 	)
   axlUIMenuFind(nil -1)
   axlUIMenuInsert(nil menuList)
