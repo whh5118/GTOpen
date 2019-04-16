@@ -48,8 +48,9 @@ let((tt)
 
 ;------form·´À¡º¯Êý
 procedure( gt_calculator_CB(form)
-let((tt)
+let((tt update)
 	println(form->curField)
+	update = t
 	case(form->curField
 		("mils_input"
 			if(rexMatchp("[^0-9.]+" form->curValue) then
@@ -81,8 +82,13 @@ let((tt)
 			)
 	  	t
     )
+    (t
+    	update = nil
+    )
 	)
-	gt_calculator_update_form(form)
+	when(update
+		gt_calculator_update_form(form)
+	)
 )
 )
 
