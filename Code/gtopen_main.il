@@ -16,6 +16,9 @@ let((port menuList tt menuListch)
 			("[Working Directory]" "filemgr")
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
+;			(popup "Board Tools")
+;			   ("Calculator" "skill gt_calculator_main")
+;			(end)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
 			(end)
@@ -24,7 +27,7 @@ let((port menuList tt menuListch)
 		(end)
 	)
 	chlist = '(
-		"&GTopen" "\274\270\302\245\271\244\276\337"
+		"&GTopen" "\274\270\302\245\277\306\274\274"
 		"[Working Directory]" "\344\257\300\300\304\277\302\274"
 		"[Clean Directory]" "\307\345\300\355\304\277\302\274"
 		"Utility Tools" "\312\265\323\303\271\244\276\337"
