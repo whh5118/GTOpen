@@ -1,9 +1,0 @@
-axlSetAlias( "~Q" "skill Test_funload") 
-axlSetAlias( "~W" "skill Test_fun") 
-axlSetAlias( "~A" "skill Test_ChangeEn2CH") 
-
-defun( Test_funload ()
-	loadi("D:/*/Codegtopen_main.il") ;自定义修改文件位置
-)
-
-Test_funload()
