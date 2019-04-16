@@ -8,6 +8,7 @@ let((tt)
 ;------ctrl+1是加载，ctrl+2是运行。
 	load(strcat(gtopen_global->InstallPath "/code/gtopen_calculator.il"))
 	gt_calculator_main()
+	
 t
 )
 )
