@@ -16,13 +16,13 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [调试快捷键(ctrl+1,ctrl+2)](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E8%B0%83%E8%AF%95%E5%BF%AB%E6%8D%B7%E9%94%AE.bmp)
 * [CIW查看调试结果](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%8F%8D%E9%A6%88.bmp)
 ### 5、实用工具开发
-* [计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gt_calculator.il)
+* [计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_calculator.il)
 * [测量工具]()
 * [菜单函数]()
 ### 6、联系方式
 学习群：
-* QQ群：[573039197](https://github.com/whh5118/GTOpen/blob/master/QQ%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
-* 微信群：[Cadence Skill自学堂](https://github.com/whh5118/GTOpen/blob/master/%E5%BE%AE%E4%BF%A1%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
+* QQ群：[573039197](https://github.com/whh5118/GTOpen/blob/master/FAQ/QQ%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
+* 微信群：[Cadence Skill自学堂](https://github.com/whh5118/GTOpen/blob/master/FAQ/%E5%BE%AE%E4%BF%A1%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
 
 公司：
-* 公众号：[几楼科技](https://github.com/whh5118/GTOpen/blob/master/%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
+* 公众号：[几楼科技](https://github.com/whh5118/GTOpen/blob/master/FAQ/%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg)
