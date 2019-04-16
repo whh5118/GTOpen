@@ -13,19 +13,18 @@ let((port menuList)
 	load(strcat(gtopen_global->InstallPath "/Code/gtopen_calculator.il"))
 	menuList = '(
 		(popup "&GTopen")
-		("[Working Directory]" "filemgr")
-		("[Clean Directory]" "skill gtopen_Clean")
-		(separator)
-		(popup "Utility Tools") 
-		   ("mils<->mm" "skill gt_calculator_main")
-		   ("test" "echo test")
+			("[Working Directory]" "filemgr")
+			("[Clean Directory]" "skill gtopen_Clean")
+			(separator)
+			(popup "Utility Tools")
+			   ("mils<->mm" "skill gt_calculator_main")
+			(end)
+			(separator)
+			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
 		(end)
-		(separator)
-		("[Tool About]" "skill gtopen_about")
 	)
   axlUIMenuFind(nil -1)
   axlUIMenuInsert(nil menuList)
-	
 )
 )
 
@@ -59,10 +58,8 @@ procedure( gtopen_about()
 ;-----调试函数
 procedure( gtopen_Debugfun()
 let((tt)
-;------将需要调试的il文件到这里。
 ;------ctrl+1是加载，ctrl+2是运行。
 	
-;	load(strcat(gtopen_global->InstallPath "/Code/gtopen_calculator.il"))
 	gtopen_menu_load()
 t
 )
@@ -91,6 +88,17 @@ let((file port InstallPath)
 	axlTriggerSet('menu 'gtopen_menu_load)
 	axlSetAlias( "~1" "skill load(strcat(gtopen_global->InstallPath \"/Code/gtopen_main.il\"))")
 	axlSetAlias( "~2" "skill gtopen_Debugfun")
+	
+	
+;------将需要调试的il文件到这里。
+	load(strcat(gtopen_global->InstallPath "/Code/gtopen_calculator.il"))
+	
+	
+	
+	
+	
+;---------------------------
+
 )
 )
 gtopen_int()
