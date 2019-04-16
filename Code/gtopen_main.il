@@ -1,25 +1,40 @@
 
 
-
 ;------环境定义
 
-defvar(gtopen_global nil)
-
-
-;-----转换成中文，快捷键（Ctrl+Q）
-procedure( Test_ChangeEn2CH()
-let((tt)
-	tt = axlUIPrompt("\307\353\312\344\310\353\326\320\316\304\243\272")
-	axlUIPrompt("\264\372\302\353\312\307:",sprintf(nil,"%L",tt))
-	t
+procedure( gtopen_int()
+let((file port InstallPath)
+	unless(boundp('gtopen_global)
+		defvar(gtopen_global nil)
+		gtopen_global = ncons(nil)
+	)
+	
+	;---获取安装路径
+	InstallPath = nil
+	file = strcat(buildString(parseString(getShellEnvVar("HOME") "\\") "/") "/pcbenv/allegro.ilinit")
+	port = infile(file)
+	while(gets(n0 port)
+		when(rexMatchp("load.*gtopen_main.il\")+" n0)
+			InstallPath = car(axlDMFileParts(cadr(parseString(n0 " ()\t\n\""))))
+			InstallPath = buildString(reverse(cdr(reverse(parseString(InstallPath "/\\")))) "/")
+		)
+	)
+	close(port)
+	gtopen_global->InstallPath = InstallPath
 )
 )
+gtopen_int()
+
 
 ;-----测试函数
-procedure( Test_fun()
+procedure( gtopen_Debugfun()
 let((tt)
-	println(11)
+	load(strcat(gtopen_global->InstallPath "/code/gtopen_calculator.il"))
+	gt_calculator_main()
 t
 )
 )
 
+
+axlSetAlias( "~1" "skill load(strcat(gtopen_global->InstallPath \"/Code/gtopen_main.il\"))")
+axlSetAlias( "~2" "skill gtopen_Debugfun")
