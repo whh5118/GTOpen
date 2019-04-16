@@ -12,16 +12,14 @@ prog((form)
 ;------´´½¨form
 procedure( gt_calculator_createform()
 let((file port form)
-	file = axlTempFile()
-	file = "G:\\form\\gt_calculator.form"
-	
+	file = strcat(gtopen_global->InstallPath "/Code/form/gtopen_calculator.form")
+	println(file)
 	when(boundp('calculator_form)
 		when(axlIsFormType(eval('calculator_form))
 			axlFormClose(eval('calculator_form))
 		)
 	)
 	form = axlFormCreate('calculator_form file nil 'gt_calculator_CB t)
-;	deleteFile(file)
 	form
 )
 )
