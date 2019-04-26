@@ -16,9 +16,9 @@ let((port menuList tt menuListch)
 			("[Working Directory]" "filemgr")
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
-;			(popup "Board Tools")
-;			   ("Calculator" "skill gt_calculator_main")
-;			(end)
+			(popup "Board Tools")
+			   ("Board Parameters Setup" "skill geopen_BoardParam_main")
+			(end)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
 			(end)
@@ -26,15 +26,17 @@ let((port menuList tt menuListch)
 			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
 		(end)
 	)
+	
+	;------中文菜单
 	chlist = '(
 		"&GTopen" "\274\270\302\245\277\306\274\274"
-		"[Working Directory]" "\344\257\300\300\304\277\302\274"
-		"[Clean Directory]" "\307\345\300\355\304\277\302\274"
+		"[Working Directory]" "[\344\257\300\300\304\277\302\274]"
+		"[Clean Directory]" "[\307\345\300\355\304\277\302\274]"
 		"Utility Tools" "\312\265\323\303\271\244\276\337"
 		"Calculator" "\274\306\313\343\306\367"
-		"[Tool About]" "\271\330\323\332"
+		"[Tool About]" "[\271\330\323\332]"
 	)
-	when(axlVersion('version) < 17
+	when(axlVersion('version) < 17 && nil
 		menuListch = nil
 		foreach(n0 menuList
 			tt = member(car(n0) chlist)
@@ -51,6 +53,8 @@ let((port menuList tt menuListch)
 		)
 		menuList = reverse(menuListch)
 	)
+	
+	
   axlUIMenuFind(nil -1)
   axlUIMenuInsert(nil menuList)
 )
@@ -87,8 +91,7 @@ procedure( gtopen_about()
 procedure( gtopen_Debugfun()
 let((tt)
 ;------ctrl+1是加载，ctrl+2是运行。
-	
-	gtopen_menu_load()
+
 t
 )
 )
