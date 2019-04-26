@@ -49,7 +49,6 @@ let((tt)
 ;------form·´À¡º¯Êı
 procedure( gt_calculator_CB(form)
 let((tt update)
-	println(form->curField)
 	update = t
 	case(form->curField
 		("mils_input"
