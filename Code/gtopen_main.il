@@ -122,7 +122,7 @@ let((file port InstallPath)
 	
 	
 ;------将需要调试的il文件到这里。
-	load(strcat(gtopen_global->InstallPath "/Code/gtopen_calculator.il"))
+	load(strcat(gtopen_global->InstallPath "/Code/gtopen_Code.il"))
 	
 	
 	
