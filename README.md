@@ -17,8 +17,8 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [CIW查看调试结果](https://github.com/whh5118/GTOpen/blob/master/Code/bmp/%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%8F%8D%E9%A6%88.bmp)
 ### 5、实用工具开发
 * [菜单函数](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_main.il)
-* [1.计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il)
-* [2.导出封装](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il)
+* [1.计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1)
+* [2.导出封装](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L94)
 ### 6、联系方式
 学习群：
 * QQ群：573039197
