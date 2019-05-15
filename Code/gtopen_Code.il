@@ -117,22 +117,31 @@ let((file form)
 )
 
 procedure( gtopen_Export_Symbol_CB(form)
-let((tt symbols OldDir SavePath symbolids)
+let((tt symdefs OldDir SavePath symdefids)
 	case(form->curField
 		("export"
 			SavePath = axlDMDirectoryBrowse("." t ?title "Pick a directory")
 			when(SavePath
-				OldDir = getWorkingDir()
-				changeWorkingDir(SavePath)
-				symbols = nil
+				when(length(axlSubclassRoute(?field 'isEtch)) == 2
+					axlLayerCreateCrossSection("BOTTOM" "Conductor" "Copper" "GT0")
+					axlLayerCreateCrossSection("BOTTOM" "DIELECTRIC" "FR-4" "GT1")
+				)
+	
+				symdefs = nil
 				foreach(n0 setof(x0 form->Items (axlFormTreeViewGetSelectState(form "symbols" x0) == 1))
-					symbols = cons(axlFormTreeViewGetLabel(form "symbols" n0) symbols)
+					symdefs = cons(axlFormTreeViewGetLabel(form "symbols" n0) symdefs)
 				)
-				symbolids = setof(x0 axlDBGetDesign()->symdefs (member(x0->name symbols) != nil))
-				foreach(n0 symbolids
-					axlWritePackageFile(n0)
+				symdefids = setof(x0 axlDBGetDesign()->symdefs (member(x0->name symdefs) != nil))
+				
+				foreach(n0 symdefids
+					axlWritePackageFile(n0 SavePath)
 				)
-				changeWorkingDir(OldDir)
+				when(axlLayerGet("ETCH/GT0")
+					axlDeleteObject(axlLayerGet("ETCH/GT0"))
+				)
+				when(axlLayerGet("ETCH/GT1")
+					axlDeleteObject(axlLayerGet("ETCH/GT1"))
+				)
 			)
 		)
 	)
@@ -142,9 +151,7 @@ let((tt symbols OldDir SavePath symbolids)
 
 procedure( gtopen_Export_Symbol_int_var(form)
 let(()
-	
 	form->symbols = sort(axlDBGetDesign()->symdefs~>name 'axlStrcmpAlpNum)
-
 )
 )
 
