@@ -1,0 +1,427 @@
+FILE_TYPE=FORM_DEFN VERSION=2
+FORM
+FIXED
+PORT 60 35
+HEADER "创建焊盘"
+
+TILE
+
+
+GROUP "参数:"
+GLOC 1 3
+GSIZE 37 25
+ENDGROUP
+
+
+TEXT "焊盘类型"
+TLOC 3 1
+ENDTEXT
+POPUP <padtype_pop> "" ""
+FIELD padtype
+FLOC 11 1
+ENUMSET 8
+POP "padtype_pop"
+ENDFIELD
+
+TEXT "单位"
+TLOC 23 1
+ENDTEXT
+POPUP <unitsel_pop> "mm" "mm","mil" "mil"
+FIELD unitsel
+FLOC 27 1
+ENUMSET 4
+POP "unitsel_pop"
+ENDFIELD
+
+
+FIELD pad_view
+THUMBNAIL
+FLOC 3 6
+FSIZE 15 10
+ENDFIELD
+
+
+FIELD rec_pad
+FLOC 20 7
+CHECKLIST "矩形焊盘" "smd"
+ENDFIELD
+
+FIELD cir_pad
+FLOC 20 10
+CHECKLIST "圆形焊盘" "smd"
+ENDFIELD
+
+FIELD obl_pad
+FLOC 20 13
+CHECKLIST "椭圆焊盘" "smd"
+ENDFIELD
+
+FIELD cir_cir_hole
+FLOC 20 6
+CHECKLIST "金属圆形(盘圆形)" "hole"
+ENDFIELD
+
+FIELD cir_Rec_hole
+FLOC 20 8
+CHECKLIST "金属圆形(盘方形)" "hole"
+ENDFIELD
+
+FIELD cir_oval_hole
+FLOC 20 10
+CHECKLIST "金属圆形(盘椭圆)" "hole"
+ENDFIELD
+
+FIELD oval_oval_hole
+FLOC 20 12
+CHECKLIST "金属椭圆形(盘椭圆)" "hole"
+ENDFIELD
+
+FIELD nth_hole
+FLOC 20 14
+CHECKLIST "非金属圆形" "hole"
+ENDFIELD
+
+TEXT "焊盘名称:"
+TLOC 2 18
+ENDTEXT
+FIELD pad_name
+FLOC 10 18
+STRFILLIN 20 50
+ENDFIELD
+
+TEXT "W"
+TLOC 3 21
+INFO W_name 7
+ENDTEXT
+FIELD value_W
+FLOC 5 21
+REALFILLIN 4 4
+ENDFIELD
+
+
+TEXT "H" 
+TLOC 12 21
+INFO H_name 7
+ENDTEXT
+FIELD value_H
+FLOC 14 21
+REALFILLIN 4 4
+ENDFIELD
+
+TEXT "D1" 
+TLOC 3 24
+INFO D1_name 7
+ENDTEXT
+FIELD value_D1
+FLOC 5 24
+REALFILLIN 4 4
+ENDFIELD
+
+TEXT "D2" 
+TLOC 12 24
+INFO D2_name 7
+ENDTEXT
+FIELD value_D2
+FLOC 14 24
+REALFILLIN 4 4
+ENDFIELD
+
+TEXT "阻焊+:"
+TLOC 21 21
+ENDTEXT
+FIELD sold_val
+FLOC 26 21
+REALFILLIN 4 4
+ENDFIELD
+
+
+#
+#TABSET "tab"
+#OPTIONS tabsetDispatch
+#FLOC 3 20
+#FSIZE 37 36
+#
+#TAB "表贴焊盘"
+#
+#FIELD pad_logo
+#THUMBNAIL
+#FLOC 8 1
+#FSIZE 20 12
+#FGROUP "spad_logo"
+#ENDFIELD
+#
+#TEXT "焊盘名称: "
+#TLOC 1 14
+#ENDTEXT
+#FIELD pad_name
+#FLOC 10 14
+#STRFILLIN 17 50
+#ENDFIELD
+
+
+#
+#
+#
+#ENDTAB
+#TAB "通孔焊盘"
+#FIELD tpad_logo
+#THUMBNAIL
+#FLOC 8 1
+#FSIZE 20 8
+#FGROUP "tpad_logo"
+#ENDFIELD
+#TEXT "焊盘名称: "
+#TLOC 1 10
+#ENDTEXT
+#FIELD tpad_name
+#FLOC 10 10
+#STRFILLIN 17 50
+#ENDFIELD
+#TEXT "钻孔:"  
+#TLOC  2 13
+#ENDTEXT
+#
+#FIELD cdrill_size
+#FLOC 7 13
+#INTFILLIN 4 3
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  13 13
+#ENDTEXT
+#
+#TEXT "阻焊 + "
+#TLOC  20 13
+#ENDTEXT
+#
+#FIELD c_sold_val
+#FLOC 26 13
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  32 13
+#ENDTEXT
+#
+#GROUP "表层焊盘:"
+#GLOC 1 15
+#GSIZE 14 6
+#ENDGROUP
+#TEXT "X:"
+#TLOC  2 17
+#ENDTEXT
+#
+#FIELD cpad_size_x
+#FLOC 5 17
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC 11 17
+#ENDTEXT
+#
+#TEXT "Y:"
+#TLOC  2 19
+#ENDTEXT
+#
+#FIELD cpad_size_y
+#FLOC 5 19
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  11 19
+#ENDTEXT
+#
+#GROUP "内层焊盘:"
+#GLOC 19 15
+#GSIZE 14 6
+#ENDGROUP
+#TEXT "X:"
+#TLOC  20 17
+#ENDTEXT
+#
+#FIELD ncpad_size_x
+#FLOC 23 17
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC 29 17
+#ENDTEXT
+#
+#TEXT "Y:"
+#TLOC  20 19
+#ENDTEXT
+#
+#FIELD ncpad_size_y
+#FLOC 23 19
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  29 19
+#ENDTEXT
+#
+#GROUP "选择焊盘类型:"
+#GLOC 1 21
+#GSIZE 43 8
+#ENDGROUP
+#FIELD c_t_pad
+#FLOC 2 23
+#FGROUP "thd"
+#CHECKLIST "金属圆形孔（盘圆形）" "thd"
+#ENDFIELD
+#FIELD c_r_pad
+#FLOC 2 25
+#FGROUP "thd"
+#CHECKLIST "金属圆形孔（盘方形）" "thd"
+#ENDFIELD
+#FIELD c_ob_pad
+#FLOC 2 27
+#FGROUP "thd"
+#CHECKLIST "金属圆形孔（盘椭圆形）" "thd"
+#ENDFIELD
+#FIELD c_n_pad
+#FLOC 26 23
+#FGROUP "thd"
+#CHECKLIST "非金属圆形孔" "thd"
+#ENDFIELD
+#FIELD interpad
+#FLOC  29 15
+#CHECKLIST "  " 
+#ENDFIELD
+#ENDTAB
+#
+#
+#TAB "通孔异形焊盘"
+#FIELD obpad_logo
+#THUMBNAIL
+#FLOC 8 1
+#FSIZE 20 12
+#FGROUP "obpad_logo"
+#ENDFIELD
+#TEXT "焊盘名称: "
+#TLOC 1 14
+#ENDTEXT
+#FIELD obpad_name
+#FLOC 1 16
+#STRFILLIN 30 50
+#ENDFIELD
+#TEXT "钻孔(长):"
+#TLOC  1 19
+#ENDTEXT
+#
+#FIELD odrill_size_x
+#FLOC 8 19
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  14 19
+#ENDTEXT
+#
+#TEXT "钻孔(宽):"
+#TLOC  18 19
+#ENDTEXT
+#
+#FIELD odrill_size_y
+#FLOC 25 19
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  31 19
+#ENDTEXT
+#
+#TEXT "焊盘(长):"
+#TLOC  1 22
+#ENDTEXT
+#
+#FIELD opad_size_x
+#FLOC 8 22
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  14 22
+#ENDTEXT
+#
+#TEXT "焊盘(宽):"
+#TLOC  18 22
+#ENDTEXT
+#
+#FIELD opad_size_y
+#FLOC 25 22
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  31 22
+#ENDTEXT
+#
+#TEXT "阻焊 + "
+#TLOC  1 25
+#ENDTEXT
+#
+#FIELD ob_sold_val
+#FLOC 8 25
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  14 25
+#ENDTEXT
+#
+#ENDTAB
+#
+#
+#TAB "过孔"
+#FIELD via_logo
+#THUMBNAIL
+#FLOC 8 1
+#FSIZE 20 8
+#FGROUP "via_logo"
+#ENDFIELD
+#TEXT "过孔名称: "
+#TLOC 1 10
+#ENDTEXT
+#FIELD tvia_name
+#FLOC 10 10
+#STRFILLIN 17 50
+#ENDFIELD
+#TEXT "钻孔:"  
+#TLOC  2 13
+#ENDTEXT
+#
+#FIELD via_drill
+#FLOC 10 13
+#INTFILLIN 4 3
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  16 13
+#ENDTEXT
+#
+#TEXT "焊盘:"  
+#TLOC  2 16
+#ENDTEXT
+#
+#FIELD via_pad
+#FLOC 10 16
+#INTFILLIN 4 3
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  16 16
+#ENDTEXT
+#
+#TEXT "阻焊 + "
+#TLOC  2 19
+#ENDTEXT
+#
+#FIELD via_sold_val
+#FLOC 10 19
+#INTFILLIN 4 4
+#ENDFIELD
+#TEXT "Mil"
+#TLOC  16 19
+#ENDTEXT
+#
+#ENDTAB
+#ENDTABSET
+
+FIELD cpad
+FLOC 27 30
+MENUBUTTON "创建" 10 4
+ENDFIELD
+
+ENDTILE
+ENDFORM
