@@ -336,7 +336,9 @@ let((SavePath tt)
 			)
 		)
 	)
-	gtopen_create_pad_update_form(form)
+	unless(form->curField == ""
+		gtopen_create_pad_update_form(form)
+	)
 t
 )
 )
