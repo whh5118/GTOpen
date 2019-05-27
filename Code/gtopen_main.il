@@ -22,6 +22,7 @@ let((port menuList tt menuListch)
 			   ("Calculator" "skill gt_calculator_main")
 			   ("Export Symbols" "skill gtopen_Export_Symbol")
 			   ("Create Pad" "skill gtopen_create_pad")
+			   ("Create Gnd Vias" "skill gtopen_AutoVia")
 			(end)
 			(separator)
 			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
@@ -35,9 +36,12 @@ let((port menuList tt menuListch)
 		"[Clean Directory]" "[\307\345\300\355\304\277\302\274]"
 		"Utility Tools" "\312\265\323\303\271\244\276\337"
 		"Calculator" "\274\306\313\343\306\367"
+		"Export Symbols" "\265\274\263\366\267\342\327\260"
+		"Create Pad" "\264\264\275\250\272\270\305\314"
+		"Create Gnd Vias" "\264\264\275\250Gnd\271\375\277\327"
 		"[Tool About]" "[\271\330\323\332]"
 	)
-	when(axlVersion('version) < 17 && nil
+	when(axlVersion('version) < 17 ;&& nil
 		menuListch = nil
 		foreach(n0 menuList
 			tt = member(car(n0) chlist)
