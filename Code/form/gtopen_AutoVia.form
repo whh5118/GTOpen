@@ -1,0 +1,76 @@
+FILE_TYPE = FORM_DEFN VERSION=2      
+FORM
+FIXED
+PORT 40 30
+HEADER "自动摆放Gnd过孔"
+TILE
+
+TEXT "选择过孔:"
+TLOC 1 1
+ENDTEXT
+POPUP <viasel_pop> 	"" ""
+FIELD viasel
+FLOC 9 1
+ENUMSET 7
+POP "viasel_pop"
+ENDFIELD
+
+TEXT "单位"
+TLOC 19 1
+ENDTEXT
+POPUP <unitsel_pop> 	"" ""
+FIELD unitsel
+FLOC 23 1
+ENUMSET 4
+POP "unitsel_pop"
+ENDFIELD
+
+TEXT "摆放位置:"
+TLOC 1 4
+ENDTEXT
+POPUP <placetype_pop> 	"" ""
+FIELD placetype
+FLOC 9 4
+ENUMSET 13
+POP "placetype_pop"
+ENDFIELD
+
+TEXT "孔与线、焊盘安全间距:"
+TLOC 1 7
+ENDTEXT
+FIELD via_svalue
+FLOC 20 7
+REALFILLIN 4 4
+ENDFIELD
+TEXT "Mil"
+TLOC 26 7
+ENDTEXT
+
+TEXT "孔间距"
+TLOC 1 10
+ENDTEXT
+FIELD via_space
+FLOC 20 10
+REALFILLIN 4 5
+ENDFIELD
+TEXT "Mil"
+TLOC 26 10
+ENDTEXT
+
+TEXT "GND信号名"
+TLOC 1 13
+ENDTEXT
+POPUP <gndname_pop> 	"" ""
+FIELD gndname
+FLOC 12 13
+ENUMSET 10
+POP "gndname_pop"
+ENDFIELD
+
+FIELD addvias
+FLOC 20 18
+MENUBUTTON "创建" 9 4
+ENDFIELD
+
+ENDTILE
+ENDFORM
