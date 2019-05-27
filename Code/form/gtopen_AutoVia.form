@@ -2,7 +2,7 @@ FILE_TYPE = FORM_DEFN VERSION=2
 FORM
 FIXED
 PORT 40 30
-HEADER "自动摆放Gnd过孔"
+HEADER "自动创建Gnd过孔"
 TILE
 
 TEXT "选择过孔:"
