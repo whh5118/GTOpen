@@ -791,3 +791,213 @@ let((ttW ttH ttD1 ttD2 ttS figure file)
 	file
 )
 )
+
+
+
+procedure( gtopen_AutoVia()
+let((form)
+
+	form = gtopen_AutoVia_createform()
+	gtopen_AutoVia_int_var(form)
+	gtopen_AutoVia_update_form(form)
+
+)
+)
+
+
+
+procedure( gtopen_AutoVia_createform()
+let((form)
+	
+	file = strcat(gtopen_global->InstallPath "/Code/form/gtopen_AutoVia.form")
+	when(boundp('AutoVia_form)
+		when(axlIsFormType(eval('AutoVia_form))
+			axlFormClose(eval('AutoVia_form))
+		)
+	)
+	form = axlFormCreate('AutoVia_form file nil 'gtopen_AutoVia_CB t)
+	form
+)
+)
+
+
+
+procedure( gtopen_AutoVia_CB(form)
+prog(()
+	when(!axlOKToProceed() 
+	  axlUIConfirm("Please Finish current command!") 
+	  return(nil)
+	)
+	case(form->curField
+		("viasel" | "via_svalue" | "via_space" ;| "placetype"
+			evalstring(sprintf(nil "form->var->%s = %L" form->curField form->curValue))
+		)
+		("unitsel"
+			form->var->via_svalue = axlMKSConvert(form->var->via_svalue form->var->unitsel form->curValue)
+			form->var->via_space = axlMKSConvert(form->var->via_space form->var->unitsel form->curValue)
+			form->var->unitsel = form->curValue
+		)
+		("addvias"
+			if(form->var->placetype == "matrixSel" then
+				axlDBCloak('gtopen_AutoVia_Matrix(form) 'shape)
+			else
+				gtopen_AutoVia_Side(form)
+			)
+		)
+		(t
+			return(nil)
+		)
+	)
+	gtopen_AutoVia_update_form(form)
+)
+)
+
+
+procedure( gtopen_AutoVia_int_var(form)
+let((sels vianame)
+	axlClearSelSet()
+	axlSetFindFilter(?enabled list("NOALL" "invisible" "VIAS") ?onButtons list("VIAS"))
+	axlAddSelectAll()
+	vianame = nil
+	form->viaids = nil
+	foreach(n0 axlGetSelSet()
+		unless(member(n0->name vianame)
+			vianame = cons(n0->name vianame)
+			form->viaids = cons(list(n0->name n0) form->viaids)
+		)
+	)
+	axlClearSelSet()
+	form->pop = ncons(nil)
+	form->pop->viasel = vianame
+	form->pop->unitsel = list("mm" "mil")
+	form->pop->placetype = list(list("\276\330\325\363" "matrixSel") list("\260\345\261\337" "sideSel"))
+	form->pop->gndname = rexMatchList("GND" axlDBGetDesign()->nets~>name)
+	
+	form->var = ncons(nil)
+	form->var->via_svalue = 10.
+	form->var->via_space = 100.
+	form->var->viasel = car(vianame)
+	form->var->unitsel = "mil"
+	form->var->placetype = "matrixSel"
+	form->var->gndname = car(form->pop->gndname)
+	
+)
+)
+
+
+procedure( gtopen_AutoVia_update_form(form)
+let((tt)
+	
+	foreach(n0 form->pop->?
+		tt = member(n0 form->pop)
+		axlFormBuildPopup(form symbolToString(car(tt)) cadr(tt))
+	)
+	foreach(n0 form->var->?
+		tt = member(n0 form->var)
+		axlFormSetField(form symbolToString(car(tt)) cadr(tt))
+	)
+	axlFormAutoResize(form)
+	axlFormDisplay(form)
+)
+)
+
+
+procedure( gtopen_AutoVia_Matrix(form)
+let((tt sels visfirst keepinshape M_xy ttSP v_x v_xs v_y v_ys via_xys mypath viapoly polysels)
+	
+	visfirst = axlVisibleGet()
+	axlVisibleDesign(nil)	
+	axlVisibleLayer("ROUTE KEEPIN/ALL" t)
+	axlSetFindFilter(?enabled '("noall" "shapes") ?onButtons '("ALLTYPES"))
+	axlAddSelectAll()
+	keepinshape = car(axlGetSelSet())
+	axlClearSelSet()
+	tt = axlMXYAdd(car(keepinshape->bBox) cadr(keepinshape->bBox))
+	M_xy = axlMXYMult(tt 0.5)
+	if(form->var->unitsel == "mm" then
+		ttSP = axlMKS2UU(sprintf(nil "%.2f mm" form->var->via_svalue))
+		ttSV = axlMKS2UU(sprintf(nil "%.2f mm" form->var->via_space))
+	else
+		ttSP = axlMKS2UU(sprintf(nil "%L mil" form->var->via_svalue))
+		ttSV = axlMKS2UU(sprintf(nil "%L mil" form->var->via_space))
+	)
+	v_x = car(M_xy)
+	v_xs = list(car(M_xy))
+	while(caar(keepinshape->bBox) < v_x
+		v_x = v_x - ttSV
+		v_xs = cons(v_x v_xs)
+	)
+	v_xs = reverse(v_xs)
+	v_x = car(M_xy)
+	while(caadr(keepinshape->bBox) > v_x
+		v_x = v_x + ttSV
+		v_xs = cons(v_x v_xs)
+	)
+	v_y = cadr(M_xy)
+	v_ys = list(cadr(M_xy))
+	while(cadr(car(keepinshape->bBox)) < v_y
+		v_y = v_y - ttSV
+		v_ys = cons(v_y v_ys)
+	)
+	v_ys = reverse(v_ys)
+	v_y = cadr(M_xy)
+	while(cadr(cadr(keepinshape->bBox)) > v_y
+		v_y = v_y + ttSV
+		v_ys = cons(v_y v_ys)
+	)
+	
+	via_xys = nil
+	foreach(n0 v_xs
+		foreach(n1 v_ys
+			when(axlGeoPointInShape(list(n0 n1) keepinshape)
+				via_xys = cons(list(n0 n1) via_xys)
+			)
+		)
+	)
+	axlVisibleDesign(nil)	
+	foreach(layer axlSubclasses("ETCH")
+    axlVisibleLayer(strcat("ETCH/" layer) t)
+    axlVisibleLayer(strcat("PIN/" layer) t)
+    axlVisibleLayer(strcat("VIA CLASS/" layer) t)
+    axlVisibleLayer(strcat("ROUTE KEEPOUT/" layer) t)
+    axlVisibleLayer(strcat("VIA KEEPOUT/" layer) t)
+	)
+	axlVisibleLayer("ROUTE KEEPOUT/ALL" t)
+	axlVisibleLayer("VIA KEEPOUT/ALL" t)
+	axlSetFindFilter(?enabled '("noall" "vias" "pins" "clinesegs" "shapes") ?onButtons '("ALLTYPES"))
+	tt = cadr(assoc(form->var->viasel form->viaids))
+	tt = axlMXYSub(cadr(tt->bBox) car(tt->bBox))
+	M_xy = axlMXYAdd(axlMXYMult(tt 0.5) ttSP:ttSP)
+	foreach(n0 via_xys
+		axlSingleSelectBox(list(axlMXYSub(n0 M_xy) axlMXYAdd(n0 M_xy)))
+		sels = axlGetSelSet()
+		axlClearSelSet()
+		sels = setof(x0 sels ((x0->objType == "shape" && x0->net->name == form->var->gndname) == nil))
+		if(sels then
+			tt = list(car(n0)-car(M_xy) cadr(n0))
+			mypath = axlPathStart(list(tt))
+			mypath = axlPathArcCenter(mypath 0 tt t n0)
+			viapoly = axlPolyFromDB(mypath)
+			foreach(n1 sels
+				polysels = axlPolyFromDB(n1)
+				when(n1->net->prop->LINE_TO_THRUVIA_SPACING
+					polysels = axlPolyExpand(polysels axlMKS2UU(n1->net->prop->LINE_TO_THRUVIA_SPACING) 'ALL_ARC)
+				)
+				when(axlPolyOperation(polysels viapoly 'AND)
+					via_xys = remd(n0 via_xys)
+				)
+			)
+		)
+	)
+	foreach(n0 via_xys
+		axlDBCreateVia(form->var->viasel n0 form->var->gndname)
+	)
+	axlVisibleSet(visfirst)
+)
+)
+
+procedure( gtopen_AutoVia_Side(form)
+let((tt)
+	t
+)
+)
