@@ -16,7 +16,7 @@ let((port menuList tt menuListch)
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
 			(popup "Cut")
-			   ("Cut Clines/Lines" "skill gtopen_CutClines_Lines")
+			   ("Cut Clines/Lines" "gtopen_CutClines_Lines")
 			(end)
 			(popup "Create")
 			   ("Create Pad" "skill gtopen_create_pad")
@@ -45,7 +45,7 @@ let((port menuList tt menuListch)
 		"Create Gnd Vias" "\264\264\275\250Gnd\271\375\277\327"
 		"[Tool About]" "[\271\330\323\332]"
 	)
-	when(axlVersion('version) < 17 ;&& nil
+	when(axlVersion('version) < 17 && nil
 		menuListch = nil
 		foreach(n0 menuList
 			tt = member(car(n0) chlist)
