@@ -1001,3 +1001,70 @@ let((tt)
 	t
 )
 )
+
+procedure( gtopen_CutClines_Lines()
+let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark)
+	axlCancelEnterFun()
+	mark = axlDBTransactionStart()
+	minleng = expt(0.1 cadr(axlDBGetDesignUnits()))
+	mypopup = axlUIPopupDefine(nil;axlUIGetUserData()->popupId
+		list(
+			list("Done" "axlDBTransactionCommit(mark) axlUIPopupSet(nil) axlFinishEnterFun()")
+	    list("Oops" "axlDBTransactionOops(mark)")
+	    list("Cancel" "axlDBTransactionRollback(mark) axlUIPopupSet(nil) axlCancelEnterFun()")
+		)
+	)
+	axlSetFindFilter(?enabled '("NOALL" "CLINESEGS" "LINESEGS") ?onButtons '("all"))
+	axlClearSelSet()
+	while(selbox = axlEnterBox()
+		axlUIPopupSet(mypopup)
+		axlDBTransactionMark(mark)
+	  axlSingleSelectBox(selbox)
+	  sels = axlGetSelSet()
+		axlClearSelSet()
+		foreach(n0 sels
+			mypath = axlMakeDynamicsPath(list(
+				list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
+				list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
+				list(yCoord(selbox) list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) 0.)
+				list(list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) xCoord(selbox) 0.)
+			))
+			poly0 = axlPolyFromDB(mypath)
+			linesets = nil
+			poly1 = axlPolyFromDB(n0)
+			foreach(n1 axlPolyOperation(poly1 poly0 'ANDNOT)
+				tt = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) == nil))
+				tt0 = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) != nil))
+				linelang = axlDistance(caar(tt) caar(tt0))
+				tt = axlMXYSub(car(n0->startEnd) caar(tt0))
+				when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
+					linexy0 = car(n0->startEnd)
+					linexy1 = axlMUniVector(linexy0 cadr(n0->startEnd) linelang)
+					linesets = cons(list(linexy0 linexy1) linesets)
+				)
+				tt = axlMXYSub(cadr(n0->startEnd) caar(tt0))
+				when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
+					linexy0 = cadr(n0->startEnd)
+					linexy1 = axlMUniVector(linexy0 car(n0->startEnd) linelang)
+					linesets = cons(list(linexy0 linexy1) linesets)
+				)
+			)
+			tt = ncons(nil)
+			tt->width = n0->width
+			tt->layer = n0->layer
+			tt->netname = n0->net->name
+			axlDeleteObject(n0)
+			unless(tt->parent->?
+				tt->parent = nil
+			)
+			foreach(n1 linesets
+				axlDBCreateLine(n1 tt->width tt->layer tt->netname tt->parent)
+			)
+		)
+	)
+	axlDBRefreshId(nil)
+	axlDBTransactionCommit(mark)
+	axlUIPopupSet(nil)
+)
+)
+
