@@ -15,14 +15,16 @@ let((port menuList tt menuListch)
 			("[Working Directory]" "filemgr")
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
-;			(popup "Board Tools")
-;			   ("Board Parameters Setup" "skill geopen_BoardParam_main")
-;			(end)
+			(popup "Cut")
+			   ("Cut Clines/Lines" "skill gtopen_CutClines_Lines")
+			(end)
+			(popup "Create")
+			   ("Create Pad" "skill gtopen_create_pad")
+			   ("Create Gnd Vias" "skill gtopen_AutoVia")
+			(end)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
 			   ("Export Symbols" "skill gtopen_Export_Symbol")
-			   ("Create Pad" "skill gtopen_create_pad")
-			   ("Create Gnd Vias" "skill gtopen_AutoVia")
 			(end)
 			(separator)
 			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
@@ -35,6 +37,8 @@ let((port menuList tt menuListch)
 		"[Working Directory]" "[\344\257\300\300\304\277\302\274]"
 		"[Clean Directory]" "[\307\345\300\355\304\277\302\274]"
 		"Utility Tools" "\312\265\323\303\271\244\276\337"
+		"Cut" "\307\320\270\356"
+		"Cut Clines/Lines" "\307\320\270\356\317\337\266\316"
 		"Calculator" "\274\306\313\343\306\367"
 		"Export Symbols" "\265\274\263\366\267\342\327\260"
 		"Create Pad" "\264\264\275\250\272\270\305\314"
