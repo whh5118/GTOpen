@@ -1,2 +1,2 @@
-1、解压GTOpen，放置非中文目录。
-2、双击install.sh，安装完成。
+方法一：1、解压GTOpen，放置非中文目录。 2、双击安装.bat，安装完成。
+方法二：home文件夹中allegro.ilinit中，添加：load("..../GTOpen/Code/gtopen_main.il")   ...为响应目录。
