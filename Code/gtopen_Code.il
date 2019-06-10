@@ -1002,10 +1002,9 @@ let((tt)
 )
 )
 
-axlCmdRegister("gtopen_CutClines_Lines" 'gtopen_CutClines_Lines ?cmdType "general")
-procedure( gtopen_CutClines_Lines()
-let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark)
-	axlCancelEnterFun()
+axlCmdRegister("gtopen_CutClines_Lines_Shapes" 'gtopen_CutClines_Lines_Shapes ?cmdType "interactive")
+procedure( gtopen_CutClines_Lines_Shapes()
+let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark selbox lineleng linexy0 linexy1)
 	mark = axlDBTransactionStart()
 	minleng = expt(0.1 cadr(axlDBGetDesignUnits()))
 	mypopup = axlUIPopupDefine(nil;axlUIGetUserData()->popupId
@@ -1015,54 +1014,86 @@ let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark)
 	    list("Cancel" "axlDBTransactionRollback(mark) axlUIPopupSet(nil) axlCancelEnterFun()")
 		)
 	)
-	axlSetFindFilter(?enabled '("NOALL" "CLINESEGS" "LINESEGS") ?onButtons '("all"))
+	axlSetFindFilter(?enabled '("NOALL" "vias" "CLINESEGS" "shapes" "LINESEGS") ?onButtons '("noall" "vias" "CLINESEGS" "shapes"))
 	axlClearSelSet()
 	axlUIPopupSet(mypopup)
-	while(selbox = axlEnterBox()
+	while(selbox = axlEnterBox(?prompts list(">>\307\353\312\344\310\353\265\332\322\273\270\366\265\343" ">>\307\353\312\344\310\353\265\332\266\376\270\366\265\343")) ;
 		axlUIPopupSet(mypopup)
 		axlDBTransactionMark(mark)
 	  axlSingleSelectBox(selbox)
 	  sels = axlGetSelSet()
 		axlClearSelSet()
 		foreach(n0 sels
-			mypath = axlMakeDynamicsPath(list(
-				list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
-				list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
-				list(yCoord(selbox) list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) 0.)
-				list(list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) xCoord(selbox) 0.)
-			))
-			poly0 = axlPolyFromDB(mypath)
-			linesets = nil
-			poly1 = axlPolyFromDB(n0)
-			foreach(n1 axlPolyOperation(poly1 poly0 'ANDNOT)
-				tt = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) == nil))
-				tt0 = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) != nil))
-				when(tt0
-					linelang = axlDistance(caar(tt) caar(tt0))
-					tt = axlMXYSub(car(n0->startEnd) caar(tt0))
-					when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
-						linexy0 = car(n0->startEnd)
-						linexy1 = axlMUniVector(linexy0 cadr(n0->startEnd) linelang)
-						linesets = cons(list(linexy0 linexy1) linesets)
+			case(n0->objType
+				("line"
+					mypath = axlMakeDynamicsPath(list(
+						list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
+						list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
+						list(yCoord(selbox) list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) 0.)
+						list(list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) xCoord(selbox) 0.)
+					))
+					poly0 = axlPolyFromDB(mypath)
+					linesets = nil
+					poly1 = axlPolyFromDB(n0)
+					foreach(n1 axlPolyOperation(poly1 poly0 'ANDNOT)
+						tt = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) == nil))
+						tt0 = setof(x0 n1->vertices (member(x0 car(poly1)->vertices) != nil))
+						when(tt0
+							lineleng = axlDistance(caar(tt) caar(tt0)) - n0->width
+							tt = axlMXYSub(car(n0->startEnd) caar(tt0))
+							when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
+								linexy0 = car(n0->startEnd)
+								linexy1 = axlMUniVector(linexy0 cadr(n0->startEnd) lineleng)
+								linesets = cons(list(linexy0 linexy1) linesets)
+							)
+							tt = axlMXYSub(cadr(n0->startEnd) caar(tt0))
+							when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
+								linexy0 = cadr(n0->startEnd)
+								linexy1 = axlMUniVector(linexy0 car(n0->startEnd) lineleng)
+								linesets = cons(list(linexy0 linexy1) linesets)
+							)
+						)
 					)
-					tt = axlMXYSub(cadr(n0->startEnd) caar(tt0))
-					when(abs(car(tt)) + abs(cadr(tt)) <= minleng*2 + n0->width
-						linexy0 = cadr(n0->startEnd)
-						linexy1 = axlMUniVector(linexy0 car(n0->startEnd) linelang)
-						linesets = cons(list(linexy0 linexy1) linesets)
+					tt = ncons(nil)
+					tt->width = n0->width
+					tt->layer = n0->layer
+					tt->netname = n0->net->name
+					axlDeleteObject(n0)
+					foreach(n1 linesets
+						tt0 = axlDBCreateLine(n1 tt->width tt->layer tt->netname)
+						when(caar(tt0)->net->name != tt->netname && tt->netname
+							axlDeleteObject(caar(tt0))
+						)
 					)
 				)
-			)
-			tt = ncons(nil)
-			tt->width = n0->width
-			tt->layer = n0->layer
-			tt->netname = n0->net->name
-			axlDeleteObject(n0)
-			unless(tt->parent->?
-				tt->parent = nil
-			)
-			foreach(n1 linesets
-				axlDBCreateLine(n1 tt->width tt->layer tt->netname tt->parent)
+				("via"
+					axlDeleteObject(n0)
+				)
+				("shape"
+					when(n0->net
+						mypath = axlMakeDynamicsPath(list(
+							list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
+							list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
+							list(yCoord(selbox) list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) 0.)
+							list(list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) xCoord(selbox) 0.)
+						))
+						poly0 = axlPolyFromDB(mypath)
+						
+						shapeid = n0
+						when(n0->shapeBoundary
+							shapeid = n0->shapeBoundary
+						)
+						poly1 = axlPolyFromDB(shapeid)
+						tt = ncons(nil)
+						tt->fill = shapeid->fill
+						tt->layer = shapeid->layer
+						tt->netname = shapeid->net->name
+						axlDeleteObject(shapeid)
+						foreach(n1 axlPolyOperation(poly1 poly0 'ANDNOT)
+							axlDBCreateShape(n1 tt->fill tt->layer tt->netname)
+						)
+					)
+				)
 			)
 		)
 	)
@@ -1071,4 +1102,92 @@ let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark)
 	axlUIPopupSet(nil)
 )
 )
+
+axlCmdRegister("gtopen_Cline_Cross" 'gtopen_Cline_Cross ?cmdType "interactive")
+procedure( gtopen_Cline_Cross()
+let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startxy1 tt tt0)
+	mark = axlDBTransactionStart()
+	mypopup = axlUIPopupDefine(nil
+		list(
+			list("Done" "axlDBTransactionCommit(mark) axlUIPopupSet(nil) axlFinishEnterFun()")
+	    list("Oops" "axlDBTransactionOops(mark)")
+	    list("Cancel" "axlDBTransactionRollback(mark) axlUIPopupSet(nil) axlCancelEnterFun()")
+		)
+	)
+	axlSetFindFilter(?enabled '("NOALL" "ratsnests") ?onButtons '("all"))
+	axlClearSelSet()
+	axlUIPopupSet(mypopup)
+	while(selbox = axlEnterBox(?prompts list(">>\307\353\312\344\310\353\265\332\322\273\270\366\265\343" ">>\307\353\312\344\310\353\265\332\266\376\270\366\265\343"))
+		axlUIPopupSet(mypopup)
+		axlDBTransactionMark(mark)
+	  axlSingleSelectBox(selbox)
+	  sels = axlGetSelSet()
+		axlClearSelSet()
+		foreach(n0 sels
+			file = car(axlShowObjectToFile(n0))
+			port = infile(file)
+			while(gets(line port)
+				when(rexMatchp("End points+" line)
+					gets(line port)
+					tt = member("xy" parseString(line " ()\t\n"))
+					line0xy = list(atof(cadr(tt)) atof(nth(2 tt)))
+					gets(line port)
+					tt = member("xy" parseString(line " ()\t\n"))
+					line1xy = list(atof(cadr(tt)) atof(nth(2 tt)))
+				)
+			)
+			close(port)
+			deleteFile(file)
+			segs = '()
+			foreach(n1 n0->net->branches~>children
+				foreach(n2 setof(x0 n1 (x0->objType == "path" && x0->segments != nil))
+					when(n2->segments
+						segs = append(n2->segments segs)
+					)
+				)
+			)
+			cline0 = car(setof(x0 segs (member(line0xy x0->startEnd) != nil)))
+			cline1 = car(setof(x0 segs (member(line1xy x0->startEnd) != nil)))
+			when(cline0 && cline1
+				if(axlLineSlope(cline0->startEnd) != axlLineSlope(cline1->startEnd) then
+		  		linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
+					startxy0 = car(remd(line0xy cline0->startEnd))
+					startxy1 = car(remd(line1xy cline1->startEnd))
+					while(car(linex) != cadr(linex)
+						tt = list(startxy0 axlMUniVector(startxy0 car(linex) axlDistance(startxy0 car(linex))+nth(2 linex)))
+						tt0 = list(startxy1 axlMUniVector(startxy1 cadr(linex) axlDistance(startxy1 cadr(linex))+nth(2 linex)))
+						linex = axl_ol_ol2(tt tt0)
+					)
+					
+					tt = ncons(nil)
+					tt->width = cline0->width
+					tt->layer = cline0->layer
+					tt->netname = cline0->net->name
+					tt0 = ncons(nil)
+					tt0->width = cline1->width
+					tt0->layer = cline1->layer
+					tt0->netname = cline1->net->name
+					axlDeleteObject(cline0)
+					axlDeleteObject(cline1)
+					axlDBCreateLine(list(car(linex) startxy0) tt->width tt->layer tt->netname)
+					axlDBCreateLine(list(car(linex) startxy1) tt0->width tt0->layer tt0->netname)
+					when(tt->layer != tt0->layer
+						axlDBCreateVia(car(axlCnsGetViaList("")) car(linex) tt->netname)
+					)
+				else
+					linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
+					axlDBCreateLine(list(car(linex) cadr(linex)) cline0->width cline0->layer cline0->net->name)
+					when(cline0->layer != cline1->layer
+						axlDBCreateVia(car(axlCnsGetViaList("")) cadr(linex) cline0->net->name)
+					)
+				)
+			)
+		)
+	)
+	axlDBRefreshId(nil)
+	axlDBTransactionCommit(mark)
+	axlUIPopupSet(nil)
+)
+)
+
 
