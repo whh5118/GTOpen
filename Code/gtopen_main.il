@@ -1,14 +1,25 @@
 
 
-procedure( gtopen_menu_load(@optional t_menufile)
-let((port menuList tt menuListch)
-	axlTriggerClear('menu 'gtopen_menu_load)
-	unless(t_menufile
-		foreach(n0 parseString(axlGetVariable("menupath")	" ")
-			when(isFile(strcat(n0 "/allegro.men")) && axlVersion('programName) == "allegro"
-				axlUIMenuLoad(strcat(n0 "/allegro.men"))
-			)
+procedure( gtopen_menu_load(@optional window timerId_lj elapsedTime)
+prog((port menuList tt menuListch chlist file line port offset)
+	unless(axlGetVariable("menuload")
+		return(t)
+	)
+	file = "1211.txt" ;axlTempFile()
+	axlUIMenuDump(file)
+	port = infile(file)
+	menuexit = nil
+	while(gets(line port)
+		when(rexMatchp("GTopen+" line)
+			menuexit = t
 		)
+	)
+	close(port)
+	deleteFile(file)
+	if(menuexit then
+		return(t)
+	else
+		timerId = axlUIWTimerAdd(nil 2000 t 'gtopen_menu_load)
 	)
 	menuList = '(
 		(popup "&GTopen")
@@ -16,7 +27,7 @@ let((port menuList tt menuListch)
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
 			(popup "Cut")
-			   ("Cut Clines/Lines" "gtopen_CutClines_Lines")
+			   ("Cut Clines/Lines/Shapes" "gtopen_CutClines_Lines_Shapes")
 			(end)
 			(popup "Create")
 			   ("Create Pad" "skill gtopen_create_pad")
@@ -25,13 +36,14 @@ let((port menuList tt menuListch)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
 			   ("Export Symbols" "skill gtopen_Export_Symbol")
+			   ("Cline Cross" "gtopen_Cline_Cross")
 			(end)
 			(separator)
-			("[Tool About]" "skill axlHttp(\"https://github.com/whh5118/GTOpen\")")
+			("[Tool About]" "http https://github.com/whh5118/GTOpen")
 		(end)
 	)
 	
-	;------中文菜单
+	;------中文菜单。
 	chlist = '(
 		"&GTopen" "\274\270\302\245\277\306\274\274"
 		"[Working Directory]" "[\344\257\300\300\304\277\302\274]"
@@ -62,12 +74,20 @@ let((port menuList tt menuListch)
 		)
 		menuList = reverse(menuListch)
 	)
-	
-	
-  axlUIMenuFind(nil -1)
+	offset = "-1"
+	when(axlVersion('version) <= 17
+		offset = "100"
+		file = axlTempFile()
+		axlUIMenuDump(file)
+		axlUIMenuLoad(file)
+	)
+  axlUIMenuFind(nil readstring(offset))
   axlUIMenuInsert(nil menuList)
+  deleteFile(file)
 )
 )
+
+
 
 procedure( gtopen_Clean()
 	shell("
@@ -92,20 +112,6 @@ procedure( gtopen_Clean()
 	")
 )
 
-procedure( gtopen_about()
-	axlUIConfirm("\274\270\302\245\277\306\274\274\277\252\324\264skill")
-)
-
-;-----调试函数
-procedure( gtopen_Debugfun()
-let((tt)
-;------ctrl+1是加载，ctrl+2是运行。
-
-t
-)
-)
-
-
 
 ;------环境定义
 procedure( gtopen_int()
@@ -115,7 +121,7 @@ let((file port InstallPath)
 		gtopen_global = ncons(nil)
 	)
 	InstallPath = nil
-	file = strcat(buildString(parseString(getShellEnvVar("HOME") "\\") "/") "/pcbenv/allegro.ilinit")
+	file = strcat(axlOSSlash(getShellEnvVar("HOME")) "/pcbenv/allegro.ilinit")
 	port = infile(file)
 	while(gets(n0 port)
 		when(rexMatchp("load.*gtopen_main.il\")+" n0)
@@ -125,20 +131,8 @@ let((file port InstallPath)
 	)
 	close(port)
 	gtopen_global->InstallPath = InstallPath
-	axlTriggerSet('menu 'gtopen_menu_load)
-	axlSetAlias( "~1" "skill load(strcat(gtopen_global->InstallPath \"/Code/gtopen_main.il\"))")
-	axlSetAlias( "~2" "skill gtopen_Debugfun")
-	
-	
-;------将需要调试的il文件到这里。
 	load(strcat(gtopen_global->InstallPath "/Code/gtopen_Code.il"))
-	
-	
-	
-	
-	
-;---------------------------
-
+	timerId = axlUIWTimerAdd(nil 1000 t 'gtopen_menu_load) ;<5000
 )
 )
 gtopen_int()
