@@ -136,3 +136,13 @@ let((file port InstallPath)
 )
 )
 gtopen_int()
+
+
+procedure( gtopen_install()
+let(()
+	file = strcat(axlOSSlash(getShellEnvVar("HOME")) "/pcbenv/allegro.ilinit")
+	port = outfile(file "a")
+	fprintf(port "\nload(%L)" strcat(getWorkingDir() "/Code/gtopen_main.il"))
+	close(port)
+)
+)
