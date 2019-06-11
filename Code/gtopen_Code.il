@@ -838,13 +838,18 @@ prog(()
 			form->var->unitsel = form->curValue
 		)
 		("addvias"
+			axlDBTransactionMark(form->mark)
 			if(form->var->placetype == "matrixSel" then
 				axlDBCloak('gtopen_AutoVia_Matrix(form) 'shape)
 			else
 				gtopen_AutoVia_Side(form)
 			)
 		)
+		("delvia"
+			axlDBTransactionOops(form->mark)
+		)
 		(t
+			axlDBTransactionCommit(form->mark)
 			return(nil)
 		)
 	)
@@ -881,6 +886,7 @@ let((sels vianame)
 	form->var->placetype = "matrixSel"
 	form->var->gndname = car(form->pop->gndname)
 	
+	form->mark = axlDBTransactionStart()
 )
 )
 
@@ -903,8 +909,7 @@ let((tt)
 
 
 procedure( gtopen_AutoVia_Matrix(form)
-let((tt sels visfirst keepinshape M_xy ttSP v_x v_xs v_y v_ys via_xys mypath viapoly polysels)
-	
+let((tt sels visfirst keepinshape M_xy ttSP v_x v_xs v_y v_ys via_xys mypath viapoly polysels vias)
 	visfirst = axlVisibleGet()
 	axlVisibleDesign(nil)	
 	axlVisibleLayer("ROUTE KEEPIN/ALL" t)
@@ -970,9 +975,8 @@ let((tt sels visfirst keepinshape M_xy ttSP v_x v_xs v_y v_ys via_xys mypath via
 	M_xy = axlMXYAdd(axlMXYMult(tt 0.5) ttSP:ttSP)
 	foreach(n0 via_xys
 		axlSingleSelectBox(list(axlMXYSub(n0 M_xy) axlMXYAdd(n0 M_xy)))
-		sels = axlGetSelSet()
+		sels = setof(x0 axlGetSelSet() ((x0->objType == "shape" && x0->net->name == form->var->gndname) == nil))
 		axlClearSelSet()
-		sels = setof(x0 sels ((x0->objType == "shape" && x0->net->name == form->var->gndname) == nil))
 		if(sels then
 			tt = list(car(n0)-car(M_xy) cadr(n0))
 			mypath = axlPathStart(list(tt))
@@ -989,9 +993,11 @@ let((tt sels visfirst keepinshape M_xy ttSP v_x v_xs v_y v_ys via_xys mypath via
 			)
 		)
 	)
+	vias = nil
 	foreach(n0 via_xys
-		axlDBCreateVia(form->var->viasel n0 form->var->gndname)
+		vias = cons(car(axlDBCreateVia(form->var->viasel n0 form->var->gndname)) vias)
 	)
+	axlHighlightObject(vias)
 	axlVisibleSet(visfirst)
 )
 )
@@ -1140,14 +1146,19 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 			deleteFile(file)
 			segs = '()
 			foreach(n1 n0->net->branches~>children
-				foreach(n2 setof(x0 n1 (x0->objType == "path" && x0->segments != nil))
+				foreach(n2 setof(x0 n1 ((x0->objType == "path" && x0->segments != nil) || x0->objType == "via"))
 					when(n2->segments
 						segs = append(n2->segments segs)
+					)
+					when(n2->objType == "via"
+						segs = cons(n2 segs)
 					)
 				)
 			)
 			cline0 = car(setof(x0 segs (member(line0xy x0->startEnd) != nil)))
+			via0 = car(setof(x0 segs (line0xy == x0->xy)))
 			cline1 = car(setof(x0 segs (member(line1xy x0->startEnd) != nil)))
+			via1 = car(setof(x0 segs (line1xy == x0->xy)))
 			when(cline0 && cline1
 				if(axlLineSlope(cline0->startEnd) != axlLineSlope(cline1->startEnd) then
 		  		linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
@@ -1171,14 +1182,16 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 					axlDeleteObject(cline1)
 					axlDBCreateLine(list(car(linex) startxy0) tt->width tt->layer tt->netname)
 					axlDBCreateLine(list(car(linex) startxy1) tt0->width tt0->layer tt0->netname)
-					when(tt->layer != tt0->layer
-						axlDBCreateVia(car(axlCnsGetViaList("")) car(linex) tt->netname)
+					when(via0
+						axlChangeNet(via0 tt->netname)
 					)
-				else
-					linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
-					axlDBCreateLine(list(car(linex) cadr(linex)) cline0->width cline0->layer cline0->net->name)
-					when(cline0->layer != cline1->layer
-						axlDBCreateVia(car(axlCnsGetViaList("")) cadr(linex) cline0->net->name)
+					when(via1
+						axlChangeNet(via1 tt->netname)
+					)
+					unless(car(linex) == via0->xy || car(linex) == via1->xy
+						when((tt->layer != tt0->layer)
+							axlDBCreateVia(car(axlCnsGetViaList("")) car(linex) tt->netname)
+						)
 					)
 				)
 			)
