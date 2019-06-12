@@ -1031,7 +1031,7 @@ let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark selbox linelen
 		axlClearSelSet()
 		foreach(n0 sels
 			case(n0->objType
-				("line"
+				("line"|"arc"
 					mypath = axlMakeDynamicsPath(list(
 						list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
 						list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
