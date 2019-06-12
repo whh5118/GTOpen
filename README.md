@@ -14,9 +14,29 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 ### 4、安装
 * [安装说明](https://github.com/whh5118/GTOpen/blob/master/%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E.txt)
 ### 5、实用工具开发
-* [菜单函数](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_main.il)
+* [中英文菜单](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_main.il)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E4%B8%AD%E8%8B%B1%E6%96%87%E8%8F%9C%E5%8D%95.jpg)
 * [1.计算器](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E8%AE%A1%E7%AE%97%E5%99%A8%E6%88%AA%E5%9B%BE.jpg)
 * [2.导出封装](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L94)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%AF%BC%E5%87%BA%E5%B0%81%E8%A3%85.jpg)
+* [3.创建焊盘](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L178)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%9B%E5%BB%BA%E7%84%8A%E7%9B%98.jpg)
+* [3.自动创建GND过孔](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L797)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BA%E5%9C%B0%E8%BF%87%E5%AD%94.jpg)
+* [3.切割线段/铜皮](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1005)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%87%E5%89%B2%E7%BA%BF%E6%AE%B5.gif)
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%87%E5%89%B2%E9%93%9C%E7%9A%AE.gif)
+* [3.自动连线](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1106)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E8%87%AA%E5%8A%A8%E8%BF%9E%E7%BA%BF.gif)
+
 ### 6、联系方式
 学习群：
 
