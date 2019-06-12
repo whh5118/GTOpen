@@ -2,15 +2,12 @@
 
 procedure( gtopen_menu_load(@optional window timerId_lj elapsedTime)
 prog((port menuList tt menuListch chlist file line port offset)
-	unless(axlGetVariable("menuload")
-		return(t)
-	)
-	file = "1211.txt" ;axlTempFile()
+	file = axlTempFile()
 	axlUIMenuDump(file)
 	port = infile(file)
 	menuexit = nil
 	while(gets(line port)
-		when(rexMatchp("GTopen+" line)
+		when(rexMatchp("https://github.com/whh5118/GTOpen+" line)
 			menuexit = t
 		)
 	)
@@ -19,15 +16,16 @@ prog((port menuList tt menuListch chlist file line port offset)
 	if(menuexit then
 		return(t)
 	else
-		timerId = axlUIWTimerAdd(nil 2000 t 'gtopen_menu_load)
+		timerId = axlUIWTimerAdd(nil 5000 t 'gtopen_menu_load)
 	)
 	menuList = '(
 		(popup "&GTopen")
 			("[Working Directory]" "filemgr")
 			("[Clean Directory]" "skill gtopen_Clean")
 			(separator)
-			(popup "Cut")
+			(popup "Cut/Link")
 			   ("Cut Clines/Lines/Shapes" "gtopen_CutClines_Lines_Shapes")
+			   ("Link Cline" "gtopen_Cline_Cross")
 			(end)
 			(popup "Create")
 			   ("Create Pad" "skill gtopen_create_pad")
@@ -36,7 +34,6 @@ prog((port menuList tt menuListch chlist file line port offset)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
 			   ("Export Symbols" "skill gtopen_Export_Symbol")
-			   ("Cline Cross" "gtopen_Cline_Cross")
 			(end)
 			(separator)
 			("[Tool About]" "http https://github.com/whh5118/GTOpen")
@@ -48,16 +45,21 @@ prog((port menuList tt menuListch chlist file line port offset)
 		"&GTopen" "\274\270\302\245\277\306\274\274"
 		"[Working Directory]" "[\344\257\300\300\304\277\302\274]"
 		"[Clean Directory]" "[\307\345\300\355\304\277\302\274]"
-		"Utility Tools" "\312\265\323\303\271\244\276\337"
-		"Cut" "\307\320\270\356"
-		"Cut Clines/Lines" "\307\320\270\356\317\337\266\316"
-		"Calculator" "\274\306\313\343\306\367"
-		"Export Symbols" "\265\274\263\366\267\342\327\260"
+		"[Tool About]" "[\271\330\323\332]"
+		"Cut/Link" "\307\320\270\356/\301\254\317\337"
+		"Cut Clines/Lines/Shapes" "\307\320\270\356\317\337\266\316/\315\255\306\244"
+		"Link Cline" "\327\324\266\257\301\254\317\337"
+		
+		"Create" "\264\264\275\250"
 		"Create Pad" "\264\264\275\250\272\270\305\314"
 		"Create Gnd Vias" "\264\264\275\250Gnd\271\375\277\327"
-		"[Tool About]" "[\271\330\323\332]"
+		
+		"Utility Tools" "\312\265\323\303\271\244\276\337"
+		"Calculator" "\274\306\313\343\306\367"
+		"Export Symbols" "\265\274\263\366\267\342\327\260"
 	)
-	when(axlVersion('version) < 17 && nil
+	when(axlVersion('version) < 17 							;（想要中文菜单，用这行，注释掉下面一行） 
+;	when(nil 																		;（想要英文菜单，用这行，注释掉上面一行） 
 		menuListch = nil
 		foreach(n0 menuList
 			tt = member(car(n0) chlist)
@@ -75,7 +77,7 @@ prog((port menuList tt menuListch chlist file line port offset)
 		menuList = reverse(menuListch)
 	)
 	offset = "-1"
-	when(axlVersion('version) <= 17
+	when(axlVersion('version) < 17
 		offset = "100"
 		file = axlTempFile()
 		axlUIMenuDump(file)
@@ -117,8 +119,7 @@ procedure( gtopen_Clean()
 procedure( gtopen_int()
 prog((file port InstallPath tt)
 	unless(boundp('gtopen_global)
-		defvar(gtopen_global nil)
-		gtopen_global = ncons(nil)
+		defvar(gtopen_global ncons(nil))
 	)
 	InstallPath = nil
 	tt = setof(x0 getSkillPath() (isFile(strcat(x0 "/allegro.ilinit")) == t))
