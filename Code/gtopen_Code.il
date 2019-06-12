@@ -1193,6 +1193,16 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 							axlDBCreateVia(car(axlCnsGetViaList("")) car(linex) tt->netname)
 						)
 					)
+				else
+					linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
+					when(axlLineSlope(cline0->startEnd) == axlLineSlope(list(car(linex) cadr(linex)))
+						axlDBCreateLine(list(car(linex) cadr(linex)) cline0->width cline0->layer cline0->net->name)
+						unless(car(linex) == via0->xy || car(linex) == via1->xy
+							when(cline0->layer != cline1->layer
+								axlDBCreateVia(car(axlCnsGetViaList("")) cadr(linex) cline0->net->name)
+							)
+						)
+					)
 				)
 			)
 		)
