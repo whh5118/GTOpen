@@ -1146,19 +1146,21 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 			deleteFile(file)
 			segs = '()
 			foreach(n1 n0->net->branches~>children
-				foreach(n2 setof(x0 n1 ((x0->objType == "path" && x0->segments != nil) || x0->objType == "via"))
+				foreach(n2 setof(x0 n1 ((x0->objType == "path" && x0->segments != nil) || x0->objType == "via" || x0->objType == "pin"))
 					when(n2->segments
 						segs = append(n2->segments segs)
 					)
-					when(n2->objType == "via"
+					when(n2->objType == "via" || n2->objType == "pin"
 						segs = cons(n2 segs)
 					)
 				)
 			)
 			cline0 = car(setof(x0 segs (member(line0xy x0->startEnd) != nil)))
-			via0 = car(setof(x0 segs (line0xy == x0->xy)))
+			via0 = car(setof(x0 segs (line0xy == x0->xy && x0->objType == "via")))
+			pin0 = car(setof(x0 segs (line0xy == x0->xy && x0->objType == "pin")))
 			cline1 = car(setof(x0 segs (member(line1xy x0->startEnd) != nil)))
-			via1 = car(setof(x0 segs (line1xy == x0->xy)))
+			via1 = car(setof(x0 segs (line1xy == x0->xy && x0->objType == "via")))
+			pin1 = car(setof(x0 segs (line1xy == x0->xy && x0->objType == "pin")))
 			when(cline0 && cline1
 				if(axlLineSlope(cline0->startEnd) != axlLineSlope(cline1->startEnd) then
 		  		linex = axl_ol_ol2(cline0->startEnd cline1->startEnd)
@@ -1205,6 +1207,11 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 					)
 				)
 			)
+;			when(cline0 && pin1 || cline1 && pin0
+;				println(axlLineSlope(list(line0xy line1xy)))
+;				println(axlLineSlope(cline1->startEnd))
+;				println(pin0)
+;			)
 		)
 	)
 	axlDBRefreshId(nil)
@@ -1214,3 +1221,158 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 )
 
 
+
+
+axlCmdRegister("gtopen_AddDynShape" 'gtopen_AddDynShape ?cmdType "interactive")
+procedure( gtopen_AddDynShape()
+let((form)
+
+	form = gtopen_AddDynShape_createform()
+	gtopen_AddDynShape_int_var(form)
+	gtopen_AddDynShape_update_form(form)
+
+)
+)
+
+
+
+procedure( gtopen_AddDynShape_createform()
+let((form)
+	
+	file = strcat(gtopen_global->InstallPath "/Code/form/gtopen_AddDynShape.form")
+	when(boundp('AddDynShape_form)
+		when(axlIsFormType(eval('AddDynShape_form))
+			axlFormClose(eval('AddDynShape_form))
+		)
+	)
+	form = axlFormCreate('AddDynShape_form file nil 'gtopen_AddDynShape_CB t)
+	form
+)
+)
+
+
+procedure( gtopen_AddDynShape_CB(form)
+prog(()
+	case(form->curField
+		("layersel" | "unitsel" | "netname" | "create_keepout"
+			evalstring(sprintf(nil "form->var->%s = %L" form->curField form->curValue))
+		)
+		("fix_therm_width"
+			form->var->fix_therm_width = form->curValue
+			gtopen_RunScrFile('fix_therm_width form->curValue)
+		)
+		("addshape"
+			axlDBCloak('gtopen_AddDynShape_action(form) 'shape)
+		)
+		(t
+			return(t)
+		)
+	)
+	gtopen_AddDynShape_update_form(form)
+)
+)
+
+
+procedure( gtopen_AddDynShape_int_var(form)
+let(()
+
+	form->pop = ncons(nil)
+	form->pop->unitsel = list("mm" "mil")
+	form->pop->layersel = axlSubclasses("ETCH")
+	form->pop->netname = axlDBGetDesign()->nets~>name
+	
+	form->var = ncons(nil)
+	form->var->unitsel = "mil"
+	form->var->layersel = car(form->pop->layersel)
+	form->var->netname = car(rexMatchList("GND" form->pop->netname))
+	form->var->fix_therm_width = 15.
+	form->var->create_keepout = t
+)
+)
+
+
+procedure( gtopen_AddDynShape_update_form(form)
+let((tt)
+	
+	axlVisibleDesign(nil)
+	axlVisibleLayer("BOARD GEOMETRY/OUTLINE" t)
+	axlVisibleLayer(strcat("ETCH/" form->var->layersel) t)
+	axlVisibleLayer(strcat("VIA CLASS/" form->var->layersel) t)
+	axlVisibleLayer(strcat("PIN/" form->var->layersel) t)
+	axlVisibleUpdate(t)
+	foreach(n0 form->pop->?
+		tt = member(n0 form->pop)
+		axlFormBuildPopup(form symbolToString(car(tt)) cadr(tt))
+	)
+	foreach(n0 form->var->?
+		tt = member(n0 form->var)
+		axlFormSetField(form symbolToString(car(tt)) cadr(tt))
+	)
+	axlFormAutoResize(form)
+	axlFormDisplay(form)
+)
+)
+
+
+
+procedure( gtopen_AddDynShape_action(form)
+let((selbox mypath poly0 poly1 sels)
+	selbox = axlExtentDB()
+	mypath = axlMakeDynamicsPath(list(
+		list(xCoord(selbox) list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) 0.)
+		list(list(xCoord(xCoord(selbox)) yCoord(yCoord(selbox))) yCoord(selbox) 0.)
+		list(yCoord(selbox) list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) 0.)
+		list(list(xCoord(yCoord(selbox)) yCoord(xCoord(selbox))) xCoord(selbox) 0.)
+	))
+	poly0 = axlPolyFromDB(mypath)
+	axlVisibleDesign(nil)
+	axlVisibleLayer(strcat("BOUNDARY/" form->var->layersel) t)
+	axlVisibleLayer("ROUTE KEEPIN" t)
+	axlSetFindFilter(?enabled '("noall" "shapes") ?onButtons '("ALLTYPES"))
+	axlAddSelectAll()
+	sels = axlGetSelSet()
+	axlClearSelSet()
+	foreach(n0 sels
+		when(n0->net->name == form->var->netname || index(n0->layer "ROUTE KEEPIN")
+			poly1 = axlPolyFromDB(n0)
+			when(n0->net->name
+				axlDeleteObject(n0)
+			)
+			poly0 = axlPolyOperation(poly0 poly1 'AND)
+		)
+	)
+	foreach(n1 poly0
+		axlDBCreateShape(n1 t strcat("BOUNDARY/" form->var->layersel) form->var->netname)
+	)
+)
+)
+
+procedure( gtopen_RunScrFile(mode @optional setting)
+let((cmd port file)
+	file = "./scrfile.scr"
+	port = outfile(file)
+	fprintf(port "version 16.6\n")
+	case(mode
+		('fix_therm_width
+			fprintf(port "shape global param\n")
+			fprintf(port "setwindow form.dyn_xshape\n")
+			fprintf(port "FORM dyn_xshape therm_oversize_value_box YES\n")
+			fprintf(port "FORM dyn_xshape therm_fixed_value_box YES\n")
+			fprintf(port "FORM dyn_xshape therm_fixed_value %f\n" setting)
+			fprintf(port "FORM dyn_xshape done\n")
+		)
+		('exitnosave
+			fprintf(port "exit\n")
+			fprintf(port "fillin no\n")
+		)
+		('exityessave
+			fprintf(port "exit\n")
+			fprintf(port "fillin yes\n")
+		)
+	)
+	close(port)
+	sprintf(cmd "replay %L" file)
+	axlShell(cmd)
+	deleteFile(file)
+)
+)
