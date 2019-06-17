@@ -28,8 +28,9 @@ prog((port menuList tt menuListch chlist file line port offset)
 			   ("Link Cline" "gtopen_Cline_Cross")
 			(end)
 			(popup "Create")
-			   ("Create Pad" "skill gtopen_create_pad")
-			   ("Create Gnd Vias" "skill gtopen_AutoVia")
+			   ("Pad" "skill gtopen_create_pad")
+			   ("Gnd Vias" "skill gtopen_AutoVia")
+			   ("Dynamic Shapes" "gtopen_AddDynShape")
 			(end)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
@@ -58,7 +59,7 @@ prog((port menuList tt menuListch chlist file line port offset)
 		"Calculator" "\274\306\313\343\306\367"
 		"Export Symbols" "\265\274\263\366\267\342\327\260"
 	)
-	when(axlVersion('version) < 17 							;（想要中文菜单，用这行，注释掉下面一行） 
+	when(axlVersion('version) < 17 							;（想要中文菜单，用这行，注释掉下面一行，只支持16.x） 
 ;	when(nil 																		;（想要英文菜单，用这行，注释掉上面一行） 
 		menuListch = nil
 		foreach(n0 menuList
@@ -126,7 +127,7 @@ prog((file port InstallPath tt)
 	file = strcat(axlOSSlash(car(tt)) "/allegro.ilinit")
 	port = infile(file)
 	while(gets(n0 port)
-		when(rexMatchp("^load.*gtopen_main.il\")+" n0)
+		when(rexMatchp("load.*gtopen_main.il\")+" n0)
 			InstallPath = car(axlDMFileParts(cadr(parseString(n0 " ()\t\n\""))))
 			InstallPath = buildString(reverse(cdr(reverse(parseString(InstallPath "/\\")))) "/")
 		)
