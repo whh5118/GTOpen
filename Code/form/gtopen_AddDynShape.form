@@ -1,0 +1,64 @@
+FILE_TYPE=FORM_DEFN VERSION=2
+FORM
+FIXED
+PORT 25 30
+HEADER "自动铺地铜皮"
+TILE
+
+#TEXT "单位"
+#TLOC 2 2
+#ENDTEXT
+#POPUP <unitsel_pop> 	"" ""
+#FIELD unitsel
+#FLOC 10 2
+#ENUMSET 4
+#POP "unitsel_pop"
+#ENDFIELD
+
+TEXT "选择层"
+TLOC 2 2
+ENDTEXT
+POPUP <layersel_pop> "" ""
+FIELD layersel
+FLOC 10 2
+ENUMSET 12
+POP "layersel_pop"
+ENDFIELD
+
+TEXT "选择信号"
+TLOC 2 5
+ENDTEXT
+POPUP <netname_pop> "" ""
+FIELD netname
+FLOC 10 5
+ENUMSET 12
+POP "netname_pop"
+ENDFIELD
+
+TEXT "散热焊盘线宽"
+TLOC 2 8
+ENDTEXT
+FIELD fix_therm_width
+FLOC 15 8
+REALFILLIN 4 5
+ENDFIELD
+
+#FIELD create_keepout 
+#FLOC  2 11
+#CHECKLIST "阻容内部创建Keepout" 
+#ENDFIELD
+
+#FIELD delshape
+#FLOC 2 18
+#MENUBUTTON "返回" 7 4
+#ENDFIELD
+FIELD addshape
+FLOC 16 18
+MENUBUTTON "创建" 9 4
+ENDFIELD
+
+
+
+ENDTILE
+
+ENDFORM
