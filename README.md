@@ -26,16 +26,19 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [3.创建焊盘](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L178)
 
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%9B%E5%BB%BA%E7%84%8A%E7%9B%98.jpg)
-* [3.自动创建GND过孔](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L797)
+* [4.自动创建GND过孔](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L797)
 
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BA%E5%9C%B0%E8%BF%87%E5%AD%94.jpg)
-* [3.切割线段/铜皮](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1005)
+* [5.切割线段/铜皮](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1005)
 
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%87%E5%89%B2%E7%BA%BF%E6%AE%B5.gif)
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%88%87%E5%89%B2%E9%93%9C%E7%9A%AE.gif)
-* [3.自动连线](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1106)
+* [6.自动连线](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1106)
 
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E8%87%AA%E5%8A%A8%E8%BF%9E%E7%BA%BF.gif)
+* [7.自动铺地铜皮](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1226)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%A2%9E%E5%8A%A0%E5%9C%B0%E5%8A%A8%E6%80%81%E9%93%9C.jpg)
 
 ### 6、联系方式
 学习群：
