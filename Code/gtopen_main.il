@@ -31,6 +31,7 @@ prog((port menuList tt menuListch chlist file line port offset)
 			   ("Pad" "skill gtopen_create_pad")
 			   ("Gnd Vias" "skill gtopen_AutoVia")
 			   ("Dynamic Shapes" "gtopen_AddDynShape")
+			   ("BMP Logo" "gtopen_Logo")
 			(end)
 			(popup "Utility Tools")
 			   ("Calculator" "skill gt_calculator_main")
@@ -52,8 +53,10 @@ prog((port menuList tt menuListch chlist file line port offset)
 		"Link Cline" "\327\324\266\257\301\254\317\337"
 		
 		"Create" "\264\264\275\250"
-		"Create Pad" "\264\264\275\250\272\270\305\314"
-		"Create Gnd Vias" "\264\264\275\250Gnd\271\375\277\327"
+		"Pad" "\264\264\275\250\272\270\305\314"
+		"Gnd Vias" "\264\264\275\250Gnd\271\375\277\327"
+		"Dynamic Shapes" "\266\257\314\254\315\255\306\244"
+		"BMP Logo" "BMP\315\274\261\352"
 		
 		"Utility Tools" "\312\265\323\303\271\244\276\337"
 		"Calculator" "\274\306\313\343\306\367"
