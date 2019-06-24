@@ -1417,8 +1417,7 @@ let((_getFontList)
 
 
 procedure( gtopen_Logo_CB(form)
-let((tt bmp_show Blockw Blockh width height pixel_size box pick)
-	println(form->curField)
+prog((tt bmp_show Blockw Blockh width height pixel_size box pick)
 	case(form->curField
 		("layerclass"
 			form->var->layerclass = form->curValue
@@ -1462,6 +1461,12 @@ let((tt bmp_show Blockw Blockh width height pixel_size box pick)
 					axlDBCloak(GTHzLogo_addshape(form pick) 'shape)
 				)
 			)
+		)
+		("textset"
+			axlShell("define text")
+		)
+		(t
+			return(t)
 		)
 	)
 	gtopen_Logo_Update_form(form)
