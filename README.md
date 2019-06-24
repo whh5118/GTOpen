@@ -39,6 +39,9 @@ Skill语言是基于lisp语言的基础上，封装在Cadence软件内部的一�
 * [7.自动铺地铜皮](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1226)
 
 ![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%A2%9E%E5%8A%A0%E5%9C%B0%E5%8A%A8%E6%80%81%E9%93%9C.jpg)
+* [8.导入bmp Logo](https://github.com/whh5118/GTOpen/blob/master/Code/gtopen_Code.il#L1374)
+
+![图片](https://github.com/whh5118/GTOpen/blob/master/pic/%E5%AF%BC%E5%85%A5bmpLogo.jpg)
 
 ### 6、联系方式
 学习群：
