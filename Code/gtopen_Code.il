@@ -1458,7 +1458,7 @@ prog((tt bmp_show Blockw Blockh width height pixel_size box pick)
 				pick = axlEnterPoint()
 				axlClearDynamics()
 				when(pick
-					axlDBCloak(GTHzLogo_addshape(form pick) 'shape)
+					axlDBCloak(gtopen_Logo_addshape(form pick) 'shape)
 				)
 			)
 		)
