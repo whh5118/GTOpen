@@ -1,7 +1,7 @@
 
 
 procedure( gtopen_menu_load(@optional window timerId_lj elapsedTime)
-prog((port menuList tt menuListch chlist file line port offset)
+prog((port menuexit menuList tt menuListch chlist file line port offset)
 	file = axlTempFile()
 	axlUIMenuDump(file)
 	port = infile(file)
@@ -62,6 +62,7 @@ prog((port menuList tt menuListch chlist file line port offset)
 		"Calculator" "\274\306\313\343\306\367"
 		"Export Symbols" "\265\274\263\366\267\342\327\260"
 	)
+	offset = "-1"
 	when(axlVersion('version) < 17 							;（想要中文菜单，用这行，注释掉下面一行，只支持16.x） 
 ;	when(nil 																		;（想要英文菜单，用这行，注释掉上面一行） 
 		menuListch = nil
@@ -79,17 +80,14 @@ prog((port menuList tt menuListch chlist file line port offset)
 			)
 		)
 		menuList = reverse(menuListch)
-	)
-	offset = "-1"
-	when(axlVersion('version) < 17
 		offset = "100"
 		file = axlTempFile()
 		axlUIMenuDump(file)
 		axlUIMenuLoad(file)
+  	deleteFile(file)
 	)
   axlUIMenuFind(nil readstring(offset))
   axlUIMenuInsert(nil menuList)
-  deleteFile(file)
 )
 )
 
