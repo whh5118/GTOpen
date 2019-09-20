@@ -1111,7 +1111,7 @@ let((tt tt0 minleng mypopup sels mypath poly0 linesets poly1 mark selbox linelen
 
 axlCmdRegister("gtopen_Cline_Cross" 'gtopen_Cline_Cross ?cmdType "interactive")
 procedure( gtopen_Cline_Cross()
-let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startxy1 tt tt0)
+let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startxy1 tt tt0 line0xy line1xy)
 	mark = axlDBTransactionStart()
 	mypopup = axlUIPopupDefine(nil
 		list(
@@ -1133,13 +1133,17 @@ let((selbox mark mypopup sels file port segs cline0 cline1 linex startxy0 startx
 			file = car(axlShowObjectToFile(n0))
 			port = infile(file)
 			while(gets(line port)
-				when(rexMatchp("End points+" line)
+				when(rexMatchp("end points:+" lowerCase(line))
 					gets(line port)
 					tt = member("xy" parseString(line " ()\t\n"))
 					line0xy = list(atof(cadr(tt)) atof(nth(2 tt)))
-					gets(line port)
-					tt = member("xy" parseString(line " ()\t\n"))
-					line1xy = list(atof(cadr(tt)) atof(nth(2 tt)))
+					if(member("xy" cdr(tt)) then
+						line1xy = list(atof(nth(4 tt)) atof(nth(5 tt)))
+					else
+						gets(line port)
+						tt = member("xy" parseString(line " ()\t\n"))
+						line1xy = list(atof(cadr(tt)) atof(nth(2 tt)))
+					)
 				)
 			)
 			close(port)
@@ -1587,3 +1591,45 @@ prog((tt Blockw Blockh number num row max_column column max_w bit x y offset wid
 	
 )
 )
+
+
+
+
+
+axlCmdRegister("gtopen_Logo" 'gtopen_Cline2Shape ?cmdType "interactive")
+procedure( gtopen_Cline2Shape()
+let((form)
+	
+;	axlShell("noappmode")
+	form = gtopen_Cline2Shape_Createform()
+	gtopen_Cline2Shape_Int_Var(form)
+	gtopen_Cline2Shape_Update_form(form)
+)
+)
+
+procedure( gtopen_Cline2Shape_Createform()
+let((file form)
+	file = strcat(gtopen_global->InstallPath "/Code/form/gtopen_Cline2Shape.form")
+	when('gtopen_Logoform && boundp('gtopen_Cline2Shapeform)
+		when(axlIsFormType(eval('gtopen_Cline2Shapeform))
+			axlFormClose(eval('gtopen_Cline2Shapeform))
+		)
+	)
+	
+	form = axlFormCreate('gtopen_Cline2Shapeform file nil 'gtopen_Cline2Shape_CB t)
+	
+)
+)
+
+procedure( gtopen_Cline2Shape_CB(form)
+let(()
+	println(form->curField)
+	case(form->curField
+		(
+		
+		)
+	)
+
+)
+)
+
